@@ -69,4 +69,4 @@ Celý sctipt je vydán pod licencí Creative Commons verze 3.0 BY
 Budu rád, když v souladu s licencí zachováte úvodní víceřádkový komentář
 v javascript souboru ( `jquery.copywithq.js` )
 
-                                                     ic
+ic

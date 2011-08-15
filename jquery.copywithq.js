@@ -3,13 +3,13 @@
  *
  * Automatic Quotes !
  * Requires jQuery
- * Q1 2011
+ * Q2 2011
  *
- * @copyleft	ic (icweb.eu)
- * @license		CC BY (http://creativecommons.org/licenses/by/3.0/)
- * @link			https://github.com/iiic/copywithq
- * @version		0.1
- * 
+ * @copyleft   ic (icweb.eu)
+ * @license    CC BY (http://creativecommons.org/licenses/by/3.0/)
+ * @link       https://github.com/iiic/copywithq
+ * @version    0.2
+ *
  * Fork me on github @iiic
  */
 
@@ -37,9 +37,9 @@ CopyWithQ.prototype = {
 
 	newSelection: function()
 	{
-		if(window.getSelection) { // Chrome, Safari, Firefox
+		if('getSelection' in document) { // Chrome, Safari, Firefox
 			return this.windowGetSelection();
-		} else if (document.selection) { // IE
+		} else if ('selection' in document) { // IE
 			return this.documentSelection();
 		} // 'document.getSelection' for Opera
 		return false;
