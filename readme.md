@@ -57,7 +57,7 @@ Testováno s pomocí jQuery 1.6.1 na prohlížečích
 
 ### nefunguje: ###
 * Opera 11.11
-
+* Opera 11.62
 
 
 Licence
