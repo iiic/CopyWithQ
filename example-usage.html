@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>CopyWithQ, Automatic Quotes!</title>
+	<!-- no more jQuery -->
+	<style>
+		:target {
+			border: 1px solid red;
+		}
+
+	</style>
+</head>
+
+<body>
+	<h1 id="copywithq">CopyWithQ</h1>
+	<p><strong>Automatic Quotes</strong></p>
+	<p>Simple javascript for automatic citation creation.
+		When use selects a part of the text, and copy it in the usual way
+		(both the shortcut Ctrl + c works and the use of the context menu called up by the right mouse button, the citation is automatically added to the copied text.</p>
+	<p>It creates 3 different data types (depends on <code>settings</code>) in clipboard. Plain text, HTML snippet and single link. Snippets are used by data type when pasting (CTRL + V) the data. For example pasting in <code>notepad</code> it places plain text, when pasting in Word or <a href="https://docs.google.com/document/">Google Docs</a> it places rich html snippet.</p>
+	<h2 id="whats-new-in-version-20">What's new in version 2.0</h2>
+	<ul>
+		<li>Removed jQuery dependency. Away with jQuery!</li>
+		<li>Added Scroll-to-text Fragment feature (<a href="https://caniuse.com/#feat=url-scroll-to-text-fragment">support in Chrome, Edge and Opera only</a>)</li>
+		<li>Ability to get a link with the selected part of the text by selecting the text and using the keyboard shortcut CTRL + SHIFT + L</li>
+	</ul>
+	<h2 id="use">Use</h2>
+	<p>Paste the script file anywhere in the page, like any regular <code>javascript</code> module</p>
+	<pre><code class="language-html"><div><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/copyWithQ.mjs"</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">"anonymous"</span> <span class="hljs-attr">integrity</span>=<span class="hljs-string">"sha256-eX4Yr7bQ38SW3yw8IoeRAvu5rr1Kd2wP4pRoe/45NRE="</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">import</span> { CopyWithQ } <span class="hljs-keyword">from</span> <span class="hljs-string">'/copyWithQ.mjs'</span>;
+<span class="hljs-keyword">new</span> CopyWithQ;
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</div></code></pre>
+	<p>When instantiating a class, you can pass a parameter (string or HTMLLinkElement) to the constructor, which will then be used as the author of the copied text. javascript:</p>
+	<pre><code class="language-javascript"><div><span class="hljs-keyword">new</span> CopyWithQ(<span class="hljs-string">'Jon Doe'</span>);
+</div></code></pre>
+	<p>using second parameter, you can adjust the script settings, for example, as follows:</p>
+	<pre><code class="language-javascript"><div><span class="hljs-keyword">import</span> { CopyWithQ } <span class="hljs-keyword">from</span> <span class="hljs-string">'/copyWithQ.mjs'</span>;
+<span class="hljs-keyword">const</span> settings = {
+<span class="hljs-attr">modulesImportPath</span>: <span class="hljs-string">'/vendor/js/modules'</span>,
+<span class="hljs-attr">autoQuotesMinLength</span>: <span class="hljs-number">240</span>,
+};
+<span class="hljs-keyword">new</span> CopyWithQ( <span class="hljs-string">'John Doe'</span>, settings );
+</div></code></pre>
+	<h3 id="a-simple-example-of-usage-is-in-the-example-usagehtml-file">a simple example of usage is in the <code>example-usage.html</code> file</h3>
+	<p>Why is there script embedding 2 times?
+		Isn't the whole first script <code>&lt;script type=&quot;module&quot; …&gt;&lt;/script&gt;</code> useless? It would work without him. Yes, it worked, but it would not be possible to check the integrity of the javascript module without it. Security is important, if you are interested in the security of modules more, read here: <a href="https://iiic.dev/subresource-integrity-check-u-javascriptovych-modulu">https://iiic.dev/subresource-integrity-check-u-javascriptovych-modulu</a></p>
+	<h1 id="possible-problems">Possible problems?</h1>
+	<p>The mjs extension must have the correct mime type set to <code>text/javascript</code>, if it is too laborious, rename the suffix from <code>.mjs</code> to <code>.js</code>.</p>
+	<h2 id="services">Services</h2>
+	<p>Unpkg: <a href="https://unpkg.com/copywithq-automatic-quotes">https://unpkg.com/copywithq-automatic-quotes</a></p>
+	<p>NPM: <a href="https://www.npmjs.com/package/copywithq-automatic-quotes">https://www.npmjs.com/package/copywithq-automatic-quotes</a></p>
+	<h1 id="licence">Licence</h1>
+	<p><strong>CC BY-SA 4.0</strong></p>
+	<p>This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit <a href="http://creativecommons.org/licenses/by-sa/4.0/">http://creativecommons.org/licenses/by-sa/4.0/</a> or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</p>
+	<hr>
+	<p>More info at <a href="https://iiic.dev/copywithq-automatic-quotes">https://iiic.dev/copywithq-automatic-quotes</a></p>
+
+	<section>
+		<p>Lorem ipsum <strong>dolor sit amet</strong> consectetuer faucibus nibh at consequat Donec. Scelerisque laoreet a ullamcorper nascetur vitae Duis ac euismod morbi metus. Vel quam dui Phasellus semper elit feugiat dapibus quis sit massa. Nulla condimentum nec vitae augue semper mollis cursus laoreet eget nonummy. Platea In Nam augue Maecenas Vivamus Suspendisse semper nunc leo nibh. A Donec nonummy ridiculus Praesent laoreet.</p>
+		<p>Sed porta condimentum ac dui semper amet congue lobortis eros Donec. Donec vitae eget consequat In Ut Praesent Pellentesque justo quis sit. Auctor wisi lobortis In justo elit hendrerit quis dui ligula ultrices. Est felis gravida nunc est tempus turpis Aenean congue ac fringilla. At eget nisl est semper consectetuer.</p>
+		<p>Quis in nibh laoreet feugiat augue cursus habitant dictumst neque dui. Nibh ac Quisque mauris enim nunc eu quis vel eu consectetuer. Enim pede semper cursus Sed leo vitae congue elit aliquam sapien. Curabitur nec convallis consectetuer Sed elit pellentesque Curabitur dui Curabitur convallis. Vestibulum metus Phasellus nunc ante semper orci.</p>
+	</section>
+	<p>For more info:</p>
+	<ul>
+		<li>Readme in standalone file <a href="/README.md">/README.md</a> and <a href="/README-CS.md">/README-CS.md</a></li>
+		<li>Repo on <a href="https://github.com/iiic/copywithq">Github</a></li>
+		<li>Webpage about polyfill <a href="https://iiic.dev/copywithq-automatic-quotes">https://iiic.dev/copywithq-automatic-quotes</a></li>
+	</ul>
+
+	<script type="module" src="/copyWithQ.mjs" crossorigin="anonymous" integrity="sha256-eX4Yr7bQ38SW3yw8IoeRAvu5rr1Kd2wP4pRoe/45NRE="></script>
+	<script type="module">
+		import { CopyWithQ } from '/copyWithQ.mjs';
+		// const settings = { modulesImportPath: '/vendor/js/modules' };
+		// new CopyWithQ( 'John Doe', settings );
+		new CopyWithQ( 'John Doe' );
+	</script>
+
+</body>
+
+</html>

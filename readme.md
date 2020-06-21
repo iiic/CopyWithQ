@@ -1,72 +1,72 @@
   CopyWithQ
 =============
 
-### Automatické citace ###
+**Automatic Quotes**
 
-Jednoduchý javascript pro automatickou tvorbu citací. Uživateli stačí oznatit
-část textu, běžným způsobem ji zkopírovat (funguje jak zkratka Ctrl + c,
-tak použití kontextové nabýdky vyvolané pravým talčítkem myši),a citace se do
-kopírovaného textu doplní automaticky.
+Simple javascript for automatic citation creation.
+When use selects a part of the text, and copy it in the usual way
+(both the shortcut Ctrl + c works and the use of the context menu called up by the right mouse button, the citation is automatically added to the copied text.
 
+It creates 3 different data types (depends on `settings`) in clipboard. Plain text, HTML snippet and single link. Snippets are used by data type when pasting (CTRL + V) the data. For example pasting in `notepad` it places plain text, when pasting in Word or [Google Docs](https://docs.google.com/document/) it places rich html snippet.
 
+What's new in version 2.0
+------------------------
 
-Použití
+- Removed jQuery dependency. Away with jQuery!
+- Added Scroll-to-text Fragment feature ([support in Chrome, Edge and Opera only](https://caniuse.com/#feat=url-scroll-to-text-fragment))
+- Ability to get a link with the selected part of the text by selecting the text and using the keyboard shortcut CTRL + SHIFT + L
+
+Use
+---
+
+Paste the script file anywhere in the page, like any regular `javascript` module
+
+``` html
+<script type="module" src="/copyWithQ.mjs" crossorigin="anonymous" integrity="sha256-eX4Yr7bQ38SW3yw8IoeRAvu5rr1Kd2wP4pRoe/45NRE="></script>
+<script type="module">
+	import { CopyWithQ } from '/copyWithQ.mjs';
+	new CopyWithQ;
+</script>
+```
+
+When instantiating a class, you can pass a parameter (string or HTMLLinkElement) to the constructor, which will then be used as the author of the copied text. javascript:
+
+``` javascript
+new CopyWithQ('Jon Doe');
+```
+
+using second parameter, you can adjust the script settings, for example, as follows:
+
+``` javascript
+import { CopyWithQ } from '/copyWithQ.mjs';
+const settings = {
+	modulesImportPath: '/vendor/js/modules',
+	autoQuotesMinLength: 240,
+};
+new CopyWithQ( 'John Doe', settings );
+```
+
+### a simple example of usage is in the `example-usage.html` file ###
+
+Why is there script embedding 2 times?
+ Isn't the whole first script `<script type="module" …></script>` useless? It would work without him. Yes, it worked, but it would not be possible to check the integrity of the javascript module without it. Security is important, if you are interested in the security of modules more, read here: https://iiic.dev/subresource-integrity-check-u-javascriptovych-modulu
+
+# Possible problems?
+The mjs extension must have the correct mime type set to `text/javascript`, if it is too laborious, rename the suffix from `.mjs` to `.js`.
+
+Services
+--------
+
+Unpkg: https://unpkg.com/copywithq-automatic-quotes
+
+NPM: https://www.npmjs.com/package/copywithq-automatic-quotes
+
+# Licence
+
+**CC BY-SA 4.0**
+
+This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
 -------
 
-Soubor se scriptem vložte kamkoliv do stránky, jako jakýkoliv běžný javascript.
-Nezapomeňte samozřejmě i na jQuery.
-Při vytváření instance třídy můžete konstruktoru předat paramatr (řetězec),
-který následně bude použit jako autor kopírovaného textu.
-javascript:
-
-	var linkQuote = new CopyWithQ('Jon Doe');
-
-následně metoda set může upravit chování scriptu:
-
-	linkQuote.set({proměnná:hodnota, proměnná:hodnota, ...});
-
-nastavení obsahuje následující volby
-
-* `id`: řetězec identifikátor elementu, který se musí při běhu scriptu vytvořit,
-* `addLink`: pokud se nastaví na false nepřidá do citace odkaz na původní web,
-* `sourceLinkText`: řetězec... vloží se před odkaz směřující na zdrojový web,
-* `minLengthv`: integer, který určuje od kolika vybraných znaků se přidá citace,
-* `preText`: bool, který při true zachová původní formátování zvoleného textu
-
-Kolize id s jiným elementem s totožným id by neměla způsobit selhání sctiptu.
-Objekt se vytváří na konci těla stránky (body) a z případných stejných id
-se pracuje s poslením z nich.
-
-Nakonec se script spustí metodou run:
-
-	linkQuote.run();
-
-### jednoduchý příklad použití je v souboru `example.html` ###
-
-
-
-Testováno s pomocí jQuery 1.6.1 na prohlížečích
------------------------------------------------
-
-### funguje: ###
-* IE 8.0.6001.18702 (nepříjemné probliknutí na stránkách s posuvníkem)
-* FF 5.0
-* Chrome 12.0.742.91
-* Chrome 14.0.786.0 (canary build)
-* Safari 5.0.2
-
-### nefunguje: ###
-* Opera 11.11
-* Opera 11.62
-
-
-Licence
--------
-
-Celý sctipt je vydán pod licencí Creative Commons verze 3.0 BY
-[CC BY] (http://creativecommons.org/licenses/by/3.0/cz/)
-
-Budu rád, když v souladu s licencí zachováte úvodní víceřádkový komentář
-v javascript souboru ( `jquery.copywithq.js` )
-
-ic
+More info at https://iiic.dev/copywithq-automatic-quotes
