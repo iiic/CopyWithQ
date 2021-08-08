@@ -1,6 +1,6 @@
 {
 	"name": "copywithq-automatic-quotes",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "JS module Automatic Quotes, with scroll-to-text fragment",
 	"main": "copyWithQ.mjs",
 	"scripts": {
