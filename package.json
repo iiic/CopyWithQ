@@ -9,8 +9,8 @@
 		"example-usage.html"
 	],
 	"scripts": {
-		"test": "node --test",
-		"test:coverage": "node --test --experimental-test-coverage",
+		"test": "node --test \"test/**/*.test.mjs\"",
+		"test:coverage": "node --test --experimental-test-coverage \"test/**/*.test.mjs\"",
 		"lint": "npm run lint:js && npm run lint:html && npm run lint:md && npm run lint:files",
 		"lint:js": "eslint .",
 		"lint:html": "html-validate \"**/*.html\"",
