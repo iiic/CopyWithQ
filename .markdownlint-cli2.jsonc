@@ -1,0 +1,14 @@
+{
+	// Rules tuned to the existing readme style (tabs, mixed setext/atx headings, long lines)
+	"config": {
+		"default": true,
+		"MD003": false, // heading style (setext + atx are mixed on purpose)
+		"MD010": false, // hard tabs (.editorconfig requires tabs)
+		"MD013": false, // line length
+		"MD023": false, // indented heading text
+		"MD025": false, // multiple top-level headings
+		"MD034": false, // bare URLs
+		"MD036": false // emphasis used as a heading
+	},
+	"ignores": [ "node_modules/**" ]
+}

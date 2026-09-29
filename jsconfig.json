@@ -1,8 +1,13 @@
 {
 	"compilerOptions": {
-		"noLib": false,
 		"checkJs": true,
-		"target": "es6",
-		"module": "commonjs"
-	}
+		"noEmit": true,
+		"strict": true,
+		"target": "es2022",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"lib": [ "es2022", "dom", "dom.iterable" ],
+		"types": []
+	},
+	"include": [ "types.d.ts", "copyWithQ.mjs", "modules/**/*.mjs" ]
 }

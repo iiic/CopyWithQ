@@ -1,4 +1,9 @@
-export function importWithIntegrity ( /** @type {String} */ path, /** @type {String} */ integrity )
+/**
+ * @param {String} path
+ * @param {String} [integrity]
+ * @returns {Promise<any>} imported module
+ */
+export function importWithIntegrity ( path, integrity )
 {
 	const POSSIBLE_HASHES = [ 'sha256', 'sha384', 'sha512' ]; // same length… 6 chars
 	const INTEGRITY_DIVIDER = '-';
@@ -13,19 +18,12 @@ export function importWithIntegrity ( /** @type {String} */ path, /** @type {Str
 		integrity = POSSIBLE_HASHES[ 0 ] + INTEGRITY_DIVIDER + integrity;
 	}
 
-	/** @type {HTMLScriptElement} */
-	const element = ( document.createElement( 'SCRIPT' ) ); // link rel="preload" also working, but NOT in Firefox :(
+	const element = /** @type {HTMLScriptElement} */ ( document.createElement( 'SCRIPT' ) ); // link rel="preload" also working, but NOT in Firefox :(
 
 	element.type = 'module';
 	element.src = path;
 	element.integrity = integrity;
 	element.setAttribute( 'crossorigin', 'anonymous' );
 	document.head.appendChild( element );
-	return new Promise( ( /** @type {Function} */ resolve ) =>
-	{
-		import( path ).then( ( /** @type {Module} */ module ) =>
-		{
-			resolve( module );
-		} );
-	} );
+	return import( path );
 }

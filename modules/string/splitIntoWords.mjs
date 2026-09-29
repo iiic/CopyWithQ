@@ -4,9 +4,14 @@ export class append
 	{
 		const FUNCTION_NAME = 'splitIntoWords';
 
-		if ( typeof s()[ FUNCTION_NAME ] !== 'function' ) {
+		if ( typeof s.prototype[ FUNCTION_NAME ] !== 'function' ) {
 			Object.defineProperty( s.prototype, FUNCTION_NAME, {
-				value: function ( /** @type {String} */ chars )
+				/**
+				 * @this {String}
+				 * @param {String} [chars]
+				 * @returns {Array<String>}
+				 */
+				value: function ( chars )
 				{
 					const TEMP_SEPARATOR = '{this is separator string used as temporarily replacement}';
 

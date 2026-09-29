@@ -1,0 +1,4 @@
+# conflict markers and whitespace errors in staged changes
+git diff --cached --check
+
+npm run check
