@@ -50,7 +50,19 @@ But if you want to change settings this can be done by inline json file like thi
 ### a simple example of usage is in the `example-usage.html` file ###
 
 # Possible problems?
+
 The mjs extension must have the correct mime type set to `text/javascript`, if it is too laborious, rename the suffix from `.mjs` to `.js`.
+
+Development
+-----------
+
+``` sh
+npm install        # installs dev tools and the git pre-commit hook
+npm run check      # everything below, also runs automatically before every commit
+npm run lint       # ESLint, HTML validation, Markdown lint, .editorconfig + JSON syntax
+npm run sri        # checks SRI integrity hashes (npm run sri:fix updates them)
+npm test           # unit tests (node:test + jsdom)
+```
 
 Services
 --------

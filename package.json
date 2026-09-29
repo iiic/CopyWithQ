@@ -3,8 +3,23 @@
 	"version": "2.1.0",
 	"description": "JS module Automatic Quotes, with scroll-to-text fragment",
 	"main": "copyWithQ.mjs",
+	"files": [
+		"copyWithQ.mjs",
+		"modules/",
+		"example-usage.html"
+	],
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "node --test",
+		"test:coverage": "node --test --experimental-test-coverage",
+		"lint": "npm run lint:js && npm run lint:html && npm run lint:md && npm run lint:files",
+		"lint:js": "eslint .",
+		"lint:html": "html-validate \"**/*.html\"",
+		"lint:md": "markdownlint-cli2 \"**/*.md\"",
+		"lint:files": "node scripts/check-files.mjs",
+		"sri": "node scripts/check-sri.mjs",
+		"sri:fix": "node scripts/check-sri.mjs --fix",
+		"check": "npm run lint && npm run sri && npm test",
+		"prepare": "husky"
 	},
 	"repository": {
 		"type": "git",
@@ -28,5 +43,18 @@
 	"bugs": {
 		"url": "https://github.com/iiic/copywithq/issues"
 	},
-	"homepage": "https://iiic.dev/copywithq-automatic-quotes#npmjs"
+	"homepage": "https://iiic.dev/copywithq-automatic-quotes#npmjs",
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"eslint": "^10.11.0",
+		"globals": "^17.12.0",
+		"html-validate": "^11.16.1",
+		"husky": "^9.1.7",
+		"jsdom": "^30.1.1",
+		"lint-staged": "^17.6.0",
+		"markdownlint-cli2": "^0.23.3"
+	},
+	"engines": {
+		"node": ">=22"
+	}
 }
