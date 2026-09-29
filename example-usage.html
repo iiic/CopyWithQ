@@ -22,7 +22,14 @@
 			(both the shortcut Ctrl + c works and the use of the context menu called up by the right mouse button, the citation is automatically added to the copied text.
 			Just vanilla javascript. Example html included in repo.</p>
 		<p>It creates 3 different data types (depends on <code>settings</code>) in clipboard. Plain text, HTML snippet and single link. Snippets are used by data type when pasting (CTRL + V) the data. For example pasting in <code>notepad</code> it places plain text, when pasting in Word or <a href="https://docs.google.com/document/">Google Docs</a> it places rich html snippet.</p>
-		<h2 id="whats-new-in-version-21">What's new in version 2.1</h2>
+		<h2 id="whats-new-in-version-22">What's new in version 2.2</h2>
+		<ul>
+			<li>Fixed author name in citation when the author element is not a link</li>
+			<li>Fixed multi level merge of settings</li>
+			<li>Failed module import no longer blocks the script, settings fall back to single level merge</li>
+			<li>Automatic tests, linting, type check and SRI integrity check before every commit</li>
+		</ul>
+		<p>(older news 2.1)</p>
 		<ul>
 			<li>Script settings by json file</li>
 			<li>In text snippet (mime type 'text/plain') there will be author name instead of author URL</li>
@@ -36,7 +43,7 @@
 		</ul>
 		<h2 id="use">Use</h2>
 		<p>Paste the script file anywhere in the page, like any regular <code>javascript</code> module</p>
-		<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/copyWithQ.mjs?v2.1&quot;</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">&quot;anonymous&quot;</span> <span class="hljs-attr">integrity</span>=<span class="hljs-string">&quot;sha256-quPfG11KA9gUuLPXJ8xoPuCVW+VqYAXUtFQlH8d3srQ=&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+		<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/copyWithQ.mjs?v2.2&quot;</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">&quot;anonymous&quot;</span> <span class="hljs-attr">integrity</span>=<span class="hljs-string">&quot;sha256-zclZH6CdOj6dSs/FZNV17X9LBCjkWOjpUlqxkhyY5fw=&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 		</code></pre>
 		<p>And that's all, now will be everything works with default settings.</p>
 		<p>But if you want to change settings this can be done by inline json file like this:</p>
@@ -48,7 +55,7 @@
 		<span class="hljs-string">&quot;modulesImportPath&quot;</span>: <span class="hljs-string">&quot;/modules&quot;</span>
 	}
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/copyWithQ.mjs?v2.1&quot;</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">&quot;anonymous&quot;</span> <span class="hljs-attr">integrity</span>=<span class="hljs-string">&quot;sha256-quPfG11KA9gUuLPXJ8xoPuCVW+VqYAXUtFQlH8d3srQ=&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/copyWithQ.mjs?v2.2&quot;</span> <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">&quot;anonymous&quot;</span> <span class="hljs-attr">integrity</span>=<span class="hljs-string">&quot;sha256-zclZH6CdOj6dSs/FZNV17X9LBCjkWOjpUlqxkhyY5fw=&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 		</code></pre>
 		<h3 id="a-simple-example-of-usage-is-in-the-example-usagehtml-file">a simple example of usage is in the <code>example-usage.html</code> file</h3>
 		<h1 id="possible-problems">Possible problems?</h1>
@@ -71,7 +78,7 @@
 			"modulesImportPath": "/modules"
 		}
 	</script>
-	<script type="module" src="/copyWithQ.mjs?v2.1" crossorigin="anonymous" integrity="sha256-quPfG11KA9gUuLPXJ8xoPuCVW+VqYAXUtFQlH8d3srQ="></script>
+	<script type="module" src="/copyWithQ.mjs?v2.2" crossorigin="anonymous" integrity="sha256-zclZH6CdOj6dSs/FZNV17X9LBCjkWOjpUlqxkhyY5fw="></script>
 
 </body>
 

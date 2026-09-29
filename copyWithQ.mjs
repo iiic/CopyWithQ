@@ -27,7 +27,7 @@
 * @link https://github.com/iiic/copywithq
 * @license https://creativecommons.org/licenses/by-sa/4.0/legalcode.cs CC BY-SA 4.0
 * @since Q2 2011
-* @version 2.1
+* @version 2.2
 * @readonly
 */
 const CopyWithQInternal = class
@@ -428,7 +428,7 @@ const CopyWithQInternal = class
 * @link https://github.com/iiic/copywithq
 * @license https://creativecommons.org/licenses/by-sa/4.0/legalcode.cs CC BY-SA 4.0
 * @since Q2 2011
-* @version 2.1
+* @version 2.2
 */
 export class CopyWithQ extends CopyWithQInternal
 {
