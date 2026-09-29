@@ -24,11 +24,4 @@ export default [
 			},
 		},
 	},
-	{
-		// Changing copyWithQ.mjs changes its published SRI hash, so its existing issues are reported only as warnings
-		files: [ 'copyWithQ.mjs' ],
-		rules: {
-			'no-unused-vars': 'warn',
-		},
-	},
 ];

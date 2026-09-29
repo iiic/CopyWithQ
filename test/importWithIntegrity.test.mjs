@@ -24,3 +24,8 @@ test( 'adds sha256 prefix when the algorithm is missing', async () =>
 	await importWithIntegrity( path, 'abc' );
 	assert.equal( document.head.querySelector( `script[src="${ path }"]` ).integrity, 'sha256-abc' );
 } );
+
+test( 'rejects when the module does not exist', async () =>
+{
+	await assert.rejects( importWithIntegrity( MODULES_URL + '/missing.mjs', 'sha256-abc' ) );
+} );

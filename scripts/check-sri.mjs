@@ -14,7 +14,8 @@ const MAIN_FILE = 'copyWithQ.mjs';
 const DOCUMENTS = [ 'readme.md', 'example-usage.html' ];
 
 const MODULE_IMPORT_REGEXP = /(modulesImportPath \+ '(\/[\w/]+\.mjs)',\s*')(sha\d{3}-[A-Za-z0-9+/=]+)(')/g;
-const MAIN_SCRIPT_REGEXP = /(src="\/copyWithQ\.mjs[^"]*"[^>]*integrity=")(sha\d{3}-[A-Za-z0-9+/=]+)(")/g;
+// matches both the real <script> tag and its HTML-escaped (highlighted) code sample in example-usage.html
+const MAIN_SCRIPT_REGEXP = /(\/copyWithQ\.mjs[^"&]*(?:"|&quot;)(?:(?!copyWithQ\.mjs)[^\n])*?integrity(?:<\/span>)?=(?:<span[^>]*>)?(?:"|&quot;))(sha\d{3}-[A-Za-z0-9+/]+=*)("|&quot;)/g;
 
 const read = ( /** @type {String} */ path ) => readFileSync( new URL( path, ROOT ), 'utf8' );
 

@@ -36,3 +36,14 @@ test( 'overwrites scalar values and replaces arrays', () =>
 	const result = Object.deepAssign( { a: 1, list: [ 1, 2, 3 ] }, { a: null, list: [ 9 ] } );
 	assert.deepEqual( result, { a: null, list: [ 9 ] } );
 } );
+
+test( 'merges keys that exist on Object constructor or prototype (name, constructor)', () =>
+{
+	const result = Object.deepAssign( { a: 1 }, { name: { x: 1 }, toString: { y: 2 } } );
+	assert.deepEqual( result, { a: 1, name: { x: 1 }, toString: { y: 2 } } );
+} );
+
+test( 'returns an empty object without arguments', () =>
+{
+	assert.deepEqual( Object.deepAssign(), {} );
+} );

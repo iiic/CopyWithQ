@@ -16,9 +16,10 @@
 		"lint:html": "html-validate \"**/*.html\"",
 		"lint:md": "markdownlint-cli2 \"**/*.md\"",
 		"lint:files": "node scripts/check-files.mjs",
+		"typecheck": "tsc -p jsconfig.json",
 		"sri": "node scripts/check-sri.mjs",
 		"sri:fix": "node scripts/check-sri.mjs --fix",
-		"check": "npm run lint && npm run sri && npm test",
+		"check": "npm run lint && npm run typecheck && npm run sri && npm test",
 		"prepare": "husky"
 	},
 	"repository": {
@@ -52,7 +53,8 @@
 		"husky": "^9.1.7",
 		"jsdom": "^30.1.1",
 		"lint-staged": "^17.6.0",
-		"markdownlint-cli2": "^0.23.3"
+		"markdownlint-cli2": "^0.23.3",
+		"typescript": "^7.0.2"
 	},
 	"engines": {
 		"node": ">=22"

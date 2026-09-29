@@ -1,4 +1,24 @@
 /**
+ * @typedef {Object} CopyWithQSettings
+ * @property {String | HTMLElement | null} author can be: null, String, HTMLAnchorElement or other HTMLElement with author name
+ * @property {Array<String>} possibleAuthorQuerySelectors
+ * @property {Array<String>} wordSeparators
+ * @property {Number} maxWordsAsIdentifier
+ * @property {Number} maxWordSearchLength
+ * @property {Number} linkListenerOnKeyCode
+ * @property {Number} autoQuotesMinLength
+ * @property {Array<String>} dataTypes
+ * @property {{ autoAdd: Boolean, hashPrefix: String }} scrollToTextFragment
+ * @property {{ citePrefix: String, citeSeparator: String }} resultSnippet
+ * @property {String} modulesImportPath
+ * @property {Boolean} autoRun
+ */
+
+/**
+ * @typedef {( path: String, integrity?: String ) => Promise<any>} ImportWithIntegrity
+ */
+
+/**
 * @private
 * @module CopyWithQInternal
 * @classdesc CopyWithQ Automatic Quotes - private part
@@ -13,16 +33,13 @@
 const CopyWithQInternal = class
 {
 
-	static COPY_EVENT_NAME = 'copy';
-	static KEYUP_EVENT_NAME = 'keyup';
+	static COPY_EVENT_NAME = /** @type {const} */ ( 'copy' );
+	static KEYUP_EVENT_NAME = /** @type {const} */ ( 'keyup' );
 
 	static ANCHOR_NODE_NAME = 'A';
 	static BLOCKQUOTE_NODE_NAME = 'BLOCKQUOTE';
 	static CITE_NODE_NAME = 'CITE';
 	static FOOTER_NODE_NAME = 'FOOTER';
-
-	static STRING_OBJECT_NAME = 'String';
-	static ANCHOR_ELEMENT_NAME = 'HTMLAnchorElement';
 
 	static NEWLINE = "\n";
 
@@ -40,11 +57,11 @@ const CopyWithQInternal = class
 
 	/**
 	 * @public
-	 * @type {Object}
+	 * @type {CopyWithQSettings}
 	 * @description default settings… can be overwritten
 	 */
 	settings = {
-		author: null, // can be: null, String or HTMLAnchorElement
+		author: null, // can be: null, String, HTMLAnchorElement or other HTMLElement
 		possibleAuthorQuerySelectors: [ 'article .p-author', '[itemtype="https://schema.org/Article"] [itemprop="author"]' ],
 		wordSeparators: [ ' ', ' ', '	', '.', ',', ';', '?', '!', '…', ':', '„', '“', "\n", '+', '–', '-' ],
 		maxWordsAsIdentifier: 5,
@@ -66,11 +83,15 @@ const CopyWithQInternal = class
 
 	/**
 	 * @public
-	 * @type {Function}
+	 * @type {ImportWithIntegrity}
 	 */
-	importWithIntegrity;
+	importWithIntegrity = () => Promise.reject( new Error( 'importWithIntegrity is not initialized yet' ) );
 
-	async initImportWithIntegrity ( /** @type {Object} */ settings = null )
+	/**
+	 * @param {Partial<CopyWithQSettings> | null} settings
+	 * @returns {Promise<Boolean>}
+	 */
+	async initImportWithIntegrity ( settings = null )
 	{
 
 		console.groupCollapsed( '%c CopyWithQInternal %c initImportWithIntegrity %c(' + ( settings === null ? 'without settings' : 'with settings' ) + ')',
@@ -81,16 +102,12 @@ const CopyWithQInternal = class
 		console.debug( { arguments } );
 		console.groupEnd();
 
-		return new Promise( ( /** @type { Function } */ resolve ) =>
+		return new Promise( ( resolve, reject ) =>
 		{
-
-			/** @type {Object} */
 			const ip = settings && settings.modulesImportPath ? settings.modulesImportPath : this.settings.modulesImportPath;
 
-			import( ip + '/importWithIntegrity.mjs' ).then( ( /** @type {Module} */ module ) =>
+			import( ip + '/importWithIntegrity.mjs' ).then( ( module ) =>
 			{
-
-				/** @type {Function} */
 				this.importWithIntegrity = module.importWithIntegrity;
 
 				resolve( true );
@@ -103,25 +120,20 @@ const CopyWithQInternal = class
 						CopyWithQ.CONSOLE.METHOD_NAME,
 						CopyWithQ.CONSOLE.WARNING
 					);
-					this.importWithIntegrity = (/** @type {String} */ path ) =>
-					{
-						return new Promise( ( /** @type {Function} */ resolve ) =>
-						{
-							import( path ).then( ( /** @type {Module} */ module ) =>
-							{
-								resolve( module );
-							} );
-						} );
-					};
+					this.importWithIntegrity = ( path ) => import( path );
 					resolve( true );
 				} else {
-					throw 'Security Error : Import with integrity module is missing! You can try to skip this error by adding ' + SKIP_SECURITY_URL + ' hash into website URL';
+					reject( 'Security Error : Import with integrity module is missing! You can try to skip this error by adding ' + SKIP_SECURITY_URL + ' hash into website URL' );
 				}
 			} );
 		} );
 	}
 
-	async setSettings ( /** @type {Object} */ inObject )
+	/**
+	 * @param {Partial<CopyWithQSettings>} inObject
+	 * @returns {Promise<Boolean>}
+	 */
+	async setSettings ( inObject )
 	{
 		console.groupCollapsed( '%c CopyWithQInternal %c setSettings',
 			CopyWithQ.CONSOLE.CLASS_NAME,
@@ -130,15 +142,15 @@ const CopyWithQInternal = class
 		console.debug( { arguments } );
 		console.groupEnd();
 
-		return new Promise( ( /** @type {Function} */ resolve ) =>
+		return new Promise( ( resolve ) =>
 		{
 			if ( inObject.modulesImportPath ) {
 				this.settings.modulesImportPath = inObject.modulesImportPath;
 			}
 			this.importWithIntegrity(
 				this.settings.modulesImportPath + '/object/deepAssign.mjs',
-				'sha256-qv6PwXwb5wOy4BdBQVGgGUXAdHKXMtY7HELWvcvag34='
-			).then( ( /** @type {Module} */ deepAssign ) =>
+				'sha256-qiUqwGHFwnYt3n5eqhkl66ln0l8sVsYnKal3aJ5evGk='
+			).then( ( deepAssign ) =>
 			{
 				new deepAssign.append( Object );
 				this.settings = Object.deepAssign( this.settings, inObject ); // multi level assign
@@ -159,8 +171,7 @@ const CopyWithQInternal = class
 		);
 		console.debug( { arguments } );
 
-		/** @type {HTMLQuoteElement} */
-		const blockquote = ( document.createElement( CopyWithQInternal.BLOCKQUOTE_NODE_NAME ) );
+		const blockquote = /** @type {HTMLQuoteElement} */ ( document.createElement( CopyWithQInternal.BLOCKQUOTE_NODE_NAME ) );
 
 		blockquote.cite = canonicalLink;
 		blockquote.appendChild( fragment );
@@ -169,21 +180,22 @@ const CopyWithQInternal = class
 		const footer = document.createElement( CopyWithQInternal.FOOTER_NODE_NAME );
 
 		footer.appendChild( document.createTextNode( this.settings.resultSnippet.citePrefix ) );
-		if ( this.settings.author ) {
-			if ( this.settings.author.constructor.name === CopyWithQInternal.STRING_OBJECT_NAME ) {
-				footer.appendChild( document.createTextNode( this.settings.author ) );
-			} else if ( this.settings.author.constructor.name === CopyWithQInternal.ANCHOR_ELEMENT_NAME && this.settings.author.href ) {
-
-				/** @type {HTMLAnchorElement} */
-				const author = ( document.createElement( CopyWithQInternal.ANCHOR_NODE_NAME ) );
+		const settingsAuthor = this.settings.author;
+		if ( settingsAuthor ) {
+			if ( typeof settingsAuthor === 'string' ) {
+				footer.appendChild( document.createTextNode( settingsAuthor ) );
+			} else if ( settingsAuthor instanceof HTMLAnchorElement && settingsAuthor.href ) {
+				const author = /** @type {HTMLAnchorElement} */ ( document.createElement( CopyWithQInternal.ANCHOR_NODE_NAME ) );
 
 				author.rel = 'author';
-				author.href = this.settings.author.href;
-				if ( this.settings.author.title ) {
-					author.title = this.settings.author.title;
+				author.href = settingsAuthor.href;
+				if ( settingsAuthor.title ) {
+					author.title = settingsAuthor.title;
 				}
-				author.appendChild( document.createTextNode( this.settings.author.textContent ) );
+				author.appendChild( document.createTextNode( settingsAuthor.textContent ?? '' ) );
 				footer.appendChild( author );
+			} else {
+				footer.appendChild( document.createTextNode( settingsAuthor.textContent ?? '' ) );
 			}
 			footer.appendChild( document.createTextNode( this.settings.resultSnippet.citeSeparator ) );
 		}
@@ -191,8 +203,7 @@ const CopyWithQInternal = class
 		/** @type {HTMLElement} */
 		const cite = document.createElement( CopyWithQInternal.CITE_NODE_NAME );
 
-		/** @type {HTMLAnchorElement} */
-		const citeLink = ( document.createElement( CopyWithQInternal.ANCHOR_NODE_NAME ) );
+		const citeLink = /** @type {HTMLAnchorElement} */ ( document.createElement( CopyWithQInternal.ANCHOR_NODE_NAME ) );
 
 		citeLink.appendChild( document.createTextNode( document.title ? document.title : canonicalLink ) );
 		citeLink.href = canonicalLink;
@@ -213,14 +224,14 @@ const CopyWithQInternal = class
 		console.groupEnd();
 
 		let result = selectedText + CopyWithQInternal.NEWLINE + this.settings.resultSnippet.citePrefix;
-		if ( this.settings.author ) {
-			const author = this.settings.author.constructor.name === CopyWithQInternal.ANCHOR_ELEMENT_NAME ? this.settings.author.textContent : this.settings.author;
-			result += author + this.settings.resultSnippet.citeSeparator;
+		const author = this.settings.author;
+		if ( author ) {
+			result += ( typeof author === 'string' ? author : author.textContent ) + this.settings.resultSnippet.citeSeparator;
 		}
 		return result + canonicalLink;
 	}
 
-	getBorderWords (/** @type {String} */ safeSelectedText, /** @type {String} */ bodyText, /** @type {Array} */ words )
+	getBorderWords ( /** @type {String} */ safeSelectedText, /** @type {String} */ bodyText, /** @type {Array<String>} */ words )
 	{
 		console.groupCollapsed( '%c CopyWithQInternal %c getBorderWords',
 			CopyWithQ.CONSOLE.CLASS_NAME,
@@ -232,7 +243,9 @@ const CopyWithQInternal = class
 		const firstMatch = bodyText.indexOf( safeSelectedText );
 		const lastMatch = bodyText.lastIndexOf( safeSelectedText );
 
+		/** @type {String | null} */
 		let minimalStart = null;
+		/** @type {String | null} */
 		let minimalEnd = null;
 		if ( lastMatch !== -1 && firstMatch === lastMatch ) {
 			const selectedEnd = lastMatch + safeSelectedText.length;
@@ -248,7 +261,7 @@ const CopyWithQInternal = class
 					}
 				}
 				if ( minimalStart && minimalEnd ) {
-					return [ minimalStart, minimalEnd ];
+					return /** @type {[ String, String ]} */ ( [ minimalStart, minimalEnd ] );
 				}
 			}
 		}
@@ -280,19 +293,17 @@ const CopyWithQInternal = class
 		);
 		console.debug( { arguments } );
 
-		/** @type {Selection} */
 		const selection = document.getSelection();
 
-		/** @type {String} */
-		let selectedText = selection.toString();
+		/** @type {DataTransfer | null} */
+		const dataTransfer = event.clipboardData;
 
-		if ( selectedText.length >= this.settings.autoQuotesMinLength ) {
+		let selectedText = selection ? selection.toString() : '';
+
+		if ( selection && dataTransfer && selectedText.length >= this.settings.autoQuotesMinLength ) {
 			while ( this.settings.wordSeparators.includes( selectedText.charAt( 0 ) ) ) {
 				selectedText = selectedText.substr( 1 );
 			}
-
-			/** @type {DataTransfer} */
-			const dataTransfer = event.clipboardData;
 
 			const canonicalLink = this.constructLink( selectedText ).href;
 			if ( this.settings.dataTypes.includes( CopyWithQ.URL_LIST ) ) {
@@ -307,18 +318,15 @@ const CopyWithQInternal = class
 			}
 			if ( this.settings.dataTypes.includes( CopyWithQ.HTML ) ) {
 
-				/** @type {DocumentFragment} */
 				const fragment = selection.getRangeAt( selection.rangeCount - 1 ).cloneContents();
-
-				/** @type {HTMLQuoteElement} */
 				const blockquote = this.getResultSnippetElementBy( canonicalLink, fragment );
 
 				dataTransfer.setData( CopyWithQ.HTML, blockquote.outerHTML );
 			}
 			event.preventDefault();
 			event.stopPropagation();
-			console.groupEnd();
 		}
+		console.groupEnd();
 	}
 
 	keyupEventListener ( /** @type {KeyboardEvent} */ event )
@@ -331,7 +339,7 @@ const CopyWithQInternal = class
 		console.groupEnd();
 
 		if ( event.ctrlKey && event.shiftKey && event.keyCode === this.settings.linkListenerOnKeyCode ) {
-			let selectedText = window.getSelection().toString();
+			let selectedText = window.getSelection()?.toString() ?? '';
 			while ( this.settings.wordSeparators.includes( selectedText.charAt( 0 ) ) ) {
 				selectedText = selectedText.substr( 1 );
 			}
@@ -357,7 +365,6 @@ const CopyWithQInternal = class
 			let safeSelectedText = selectedText.trim().toLowerCase();
 			const bodyText = document.body.innerText.toLowerCase();
 
-			/** @type {Array} */
 			const words = safeSelectedText.splitIntoWords();
 
 			const borderWords = this.getBorderWords( safeSelectedText, bodyText, words );
@@ -385,7 +392,6 @@ const CopyWithQInternal = class
 					}
 				}
 				const wordsLength = words.length - 1;
-				const position = safeSelectedText.lastIndexOf( words[ wordsLength ] );
 				if ( scrollToTextFragmentPossible ) {
 					scrollToTextFragmentPossible = false;
 					const breakFor = wordsLength - this.settings.maxWordsAsIdentifier;
@@ -430,7 +436,10 @@ export class CopyWithQ extends CopyWithQInternal
 	static PLAIN_TEXT = 'text/plain';
 	static HTML = 'text/html';
 
-	constructor ( /** @type {HTMLScriptElement | null} */ settingsElement = null )
+	/**
+	 * @param {HTMLScriptElement | null} settingsElement inline JSON with settings
+	 */
+	constructor ( settingsElement = null )
 	{
 		console.groupCollapsed( '%c CopyWithQ',
 			CopyWithQ.CONSOLE.CLASS_NAME
@@ -442,7 +451,7 @@ export class CopyWithQ extends CopyWithQInternal
 
 		super();
 
-		/** @type {Object} */
+		/** @type {Partial<CopyWithQSettings> | null} */
 		const settings = settingsElement ? JSON.parse( settingsElement.text ) : null;
 
 		this.initImportWithIntegrity( settings ).then( () =>
@@ -494,6 +503,9 @@ export class CopyWithQ extends CopyWithQInternal
 		}
 	}
 
+	/**
+	 * @returns {Promise<Boolean>}
+	 */
 	async initSplitIntoWords ()
 	{
 		console.log( '%c CopyWithQInternal %c initSplitIntoWords',
@@ -503,8 +515,8 @@ export class CopyWithQ extends CopyWithQInternal
 
 		return this.importWithIntegrity(
 			this.settings.modulesImportPath + '/string/splitIntoWords.mjs',
-			'sha256-v1xNwYk+N83b8eyzPmlz/I6hBWAnwCU1mCx62E61SGE='
-		).then( (/** @type { Module } */ splitIntoWords ) =>
+			'sha256-BVufXA4v9eHQDkF0RB8LiGxEu3FKCqp4uixa8SfCTzw='
+		).then( ( splitIntoWords ) =>
 		{
 			new splitIntoWords.append( String );
 			return true;
@@ -532,14 +544,12 @@ export class CopyWithQ extends CopyWithQInternal
 
 		if ( !this.settings.author ) {
 
-			/** @type {Array} */
 			const qs = this.settings.possibleAuthorQuerySelectors;
 
 			const qsLength = qs.length;
 			for ( let i = 0; i < qsLength; i++ ) {
 
-				/** @type {HTMLElement} */
-				let el = document.querySelector( qs[ i ] );
+				const el = /** @type {HTMLElement | null} */ ( document.querySelector( qs[ i ] ) );
 
 				if ( el && el.textContent ) {
 					this.settings.author = el;
@@ -571,4 +581,4 @@ export class CopyWithQ extends CopyWithQInternal
 
 }
 
-new CopyWithQ( document.getElementById( 'copy-with-q-settings' ) );
+new CopyWithQ( /** @type {HTMLScriptElement | null} */ ( document.getElementById( 'copy-with-q-settings' ) ) );

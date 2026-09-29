@@ -18,6 +18,7 @@ export function setupDom ( /** @type {String} */ body = '', /** @type {String} *
 
 	globalThis.window = window;
 	globalThis.document = window.document;
+	globalThis.HTMLAnchorElement = window.HTMLAnchorElement;
 	globalThis.confirm = () => true;
 
 	return dom;

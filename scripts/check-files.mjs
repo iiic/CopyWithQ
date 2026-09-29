@@ -9,8 +9,8 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { extname } from 'node:path';
 
-const TEXT_EXTENSIONS = [ '.mjs', '.js', '.json', '.jsonc', '.html', '.md', '.yml', '.yaml', '' ];
-const TAB_INDENT_EXTENSIONS = [ '.mjs', '.js', '.json', '.jsonc', '.html', '.yml', '.yaml' ];
+const TEXT_EXTENSIONS = [ '.mjs', '.js', '.ts', '.json', '.jsonc', '.html', '.md', '.yml', '.yaml', '' ];
+const TAB_INDENT_EXTENSIONS = [ '.mjs', '.js', '.ts', '.json', '.jsonc', '.html', '.yml', '.yaml' ];
 const IGNORED_FILES = [ 'package-lock.json', 'LICENSE' ];
 
 const files = process.argv.length > 2

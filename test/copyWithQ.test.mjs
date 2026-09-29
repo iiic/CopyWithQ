@@ -11,6 +11,7 @@ const BODY = `
 		<p id="second">Another paragraph with other words. Another paragraph with other words.</p>
 		<a href="https://iiic.dev/" class="p-author" title="Author page">Michal</a>
 	</article>
+	<div itemtype="https://schema.org/Article"><span itemprop="author">Jana</span></div>
 `;
 
 const SETTINGS = {
@@ -129,6 +130,16 @@ test( 'getSelectedPlainText uses text of author link', async () =>
 	const instance = await createInstance( { author: null } );
 	instance.getAuthor();
 	assert.equal( instance.getSelectedPlainText( 'https://example.com/', 'Quote' ), 'Quote\n — Michal, https://example.com/' );
+} );
+
+test( 'author element which is not a link is used as text', async () =>
+{
+	const instance = await createInstance( { author: null, possibleAuthorQuerySelectors: [ '[itemprop="author"]' ] } );
+	instance.getAuthor();
+	assert.equal( instance.getSelectedPlainText( 'https://example.com/', 'Quote' ), 'Quote\n — Jana, https://example.com/' );
+
+	const blockquote = instance.getResultSnippetElementBy( 'https://example.com/', document.createDocumentFragment() );
+	assert.equal( blockquote.querySelector( 'footer' ).textContent, ' — Jana, Test article' );
 } );
 
 test( 'getResultSnippetElementBy creates blockquote with citation', async () =>

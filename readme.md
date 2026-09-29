@@ -29,7 +29,7 @@ Use
 Paste the script file anywhere in the page, like any regular `javascript` module
 
 ``` html
-<script type="module" src="/copyWithQ.mjs?v2.1" crossorigin="anonymous" integrity="sha256-RIEMQiYzOgrZLW3qG1Zr/dxDKkp+j83lz2DMnOUzxhs="></script>
+<script type="module" src="/copyWithQ.mjs?v2.1" crossorigin="anonymous" integrity="sha256-quPfG11KA9gUuLPXJ8xoPuCVW+VqYAXUtFQlH8d3srQ="></script>
 ```
 
 And that's all, now will be everything works with default settings.
@@ -44,7 +44,7 @@ But if you want to change settings this can be done by inline json file like thi
 		"modulesImportPath": "/modules"
 	}
 </script>
-<script type="module" src="/copyWithQ.mjs?v2.1" crossorigin="anonymous" integrity="sha256-RIEMQiYzOgrZLW3qG1Zr/dxDKkp+j83lz2DMnOUzxhs="></script>
+<script type="module" src="/copyWithQ.mjs?v2.1" crossorigin="anonymous" integrity="sha256-quPfG11KA9gUuLPXJ8xoPuCVW+VqYAXUtFQlH8d3srQ="></script>
 ```
 
 ### a simple example of usage is in the `example-usage.html` file ###
@@ -60,6 +60,7 @@ Development
 npm install        # installs dev tools and the git pre-commit hook
 npm run check      # everything below, also runs automatically before every commit
 npm run lint       # ESLint, HTML validation, Markdown lint, .editorconfig + JSON syntax
+npm run typecheck  # TypeScript type check of JSDoc types
 npm run sri        # checks SRI integrity hashes (npm run sri:fix updates them)
 npm test           # unit tests (node:test + jsdom)
 ```
